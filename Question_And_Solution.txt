@@ -1,0 +1,47 @@
+입력
+1. 첫 번 째 줄 : Node 개수 V(aNode), Edge 개수 E(aEdge)
+2. 두 번 째 줄 : 문제 시작 시 Node 위치 번호 (startNode)
+3. 세 번 째 줄 : 시작 Node(nodeNum), 도착 Node(NextVertext), 두 Node 사이의 Weight 값(weightToNextVertex)
+                -> 1번에서 2번으로 가는 엣지의 길이가 3임을 표시하는 방법이다.
+
+출력
+1. 각 줄에 i 번째 Node 까지 이동하는데 필요한 최단 경로의 값을 표시
+
+
+문제 풀이의 순서
+1) 주어진 문제에 필요한 변수 선언
+    - 인접 리스트에 사용할 pair             typedef pair<int, int> edge
+    - 인접 리스트 (2차원 배열)              vector<vector<edge> adjacencyList 
+    - 최단 거리 기록 배열 (int)             vector<int> shortestPath
+    - 노드 방문 여부 기록 배열 (bool)        vector<bool> visitedNode
+    - priority_queue                      priority_queue<edge> q
+
+2) 입력 값 변수 선인 
+    - aNode : Node 개수
+    - aEdge : Edge 개수
+    - StartNode : 문제 최초 시작 Node 번호
+    - nodeNum : 노드 번호
+    - NextVertex : 이동 할 다음 Node 값
+    - weightToNextVertex : 다음 Node로 이동할 때 지불되는 비용 (거리 값)
+
+3) 입력 변수의 초기화
+    - 최단 거리 기록 배열 값 - MAX INT 로 초기화 (비교할 최고 값) - INT_MAX
+    - 노드 방문 여부 기록 배열 - false 로 초기화 - 처음 방문은 아무것도 한 것이 없음
+    - 인접 리스트 - 주어지는 값으로 각 노드(nodeNum)에서 NextNode로 이동하는 value를 인접리스트로 기입하기
+
+4) Queue에 최초 요소 기입하기
+    - 처음 시작 Node의 초기 값 및 처음 시작 Node 번호 입력 q.push(shortestPath[StartNode], StartNode);
+
+5) while loop 수행하기
+    - Queue 에 아무 요소가 없을 때 까지 반복 실행하여, Queue에서 모든 Node를 방문하도록 설정한다.
+    
+    a. queue 안의 요소를 출력하여 새로운 변수에 저장 - pair 형태이므로 edge 타입으로 저장.
+    b. 출력된 요소에서의 첫 번 째 값은, 다음 으로 이동할 노드 번호 값
+    c. 출력된 요소에서의 두 번 째 값은, 해당 노드로 이동할 때 드는 비용 (거리 값)
+    d. 저장된 다음 노드 최단 거리(ShortestPath)값이, (현재 노드까지 이동한 값 + 다음 노드로 이동하는 값) 보다 작을 시,
+       (현재 노드까지 이동한 값 + 다음 노드로 이동하는 값)이 다음 노드의 최단 거리(ShortestPath)값으로 대체 된다.
+    e. shortestPath 가 업데이트 된다면 해당 노드로 이동한 것으로 간주하고, 이동할 해당 노드를 queue로 넣어준다.
+    f. queue 가 empty 될 때 까지 반복 수행한다.
+
+6) 출력하기
+    - 모든 노드에 방문했고, 방문된 노드일 경우 해당 노드까지의 최단 거리를 출력해 준다. 만약 노드를 방문하지 못했다면 "INF"로 대체하여 출력된다.
